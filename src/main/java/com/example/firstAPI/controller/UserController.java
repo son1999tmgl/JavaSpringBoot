@@ -19,4 +19,8 @@ public class UserController {
     public String updateUser(@RequestBody UserRequestDTO user){
         return user.getEmail();
     }
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable String id){
+        return "Deleted id: " + id;
+    }
 }
