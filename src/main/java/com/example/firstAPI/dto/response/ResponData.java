@@ -8,6 +8,7 @@ public class ResponData<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
+
     public ResponData(int status, String message, T data) {
         this.status = status;
         this.message = message;
