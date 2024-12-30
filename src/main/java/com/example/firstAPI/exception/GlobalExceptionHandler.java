@@ -16,8 +16,8 @@ import java.util.Date;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 //    request: request từ api
-//    @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class, ConstraintViolationException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class, ConstraintViolationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
 
     public ErrorResponse handlerValidationException(Exception e, WebRequest request){
         System.out.println("======================>");
