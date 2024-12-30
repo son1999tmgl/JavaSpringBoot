@@ -3,6 +3,8 @@ package com.example.firstAPI.controller;
 
 import com.example.firstAPI.DEnum.ECity;
 import com.example.firstAPI.dto.request.UserRequestDTO;
+import com.example.firstAPI.dto.response.ResponData;
+import com.example.firstAPI.dto.response.ResponseError;
 import com.example.firstAPI.dto.response.ResponseFailure;
 import com.example.firstAPI.dto.response.ResponseSuccess;
 import jakarta.validation.Valid;
@@ -16,37 +18,37 @@ import java.util.stream.Stream;
 @RequestMapping("/user")
 public class UserController {
     @PostMapping("/")
-    public ResponseSuccess createUser(@Valid @RequestBody UserRequestDTO user){
+    public ResponData<?> createUser(@Valid @RequestBody UserRequestDTO user){
         System.out.println("Request add user: " + user.getFirstName());
         try{
-            return new ResponseSuccess(HttpStatus.CREATED, "User added successfully");
+            return new ResponData<>(HttpStatus.CREATED.value(), "User added successfully");
         } catch (Exception e) {
-            return new ResponseFailure(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
     @GetMapping("/{id}")
-    public ResponseSuccess getUser(@PathVariable("id") String id){
+    public ResponData<?> getUser(@PathVariable("id") String id){
         System.out.println("get id: " + id);
         try{
-            return new ResponseSuccess(HttpStatus.OK, "user", new UserRequestDTO("Nguyen", "Son", "son1999tmgl3@gmail.com", 18, ECity.HANOI));
+            return new ResponData<>(HttpStatus.OK.value(), "user", new UserRequestDTO("Nguyen", "Son", "son1999tmgl3@gmail.com", 18, ECity.HANOI));
         } catch (Exception e) {
-            return new ResponseFailure(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
     @PutMapping("/")
-    public ResponseSuccess updateUser(@RequestBody UserRequestDTO user){
+    public ResponData<?> updateUser(@RequestBody UserRequestDTO user){
         try{
-            return new ResponseSuccess(HttpStatus.ACCEPTED, "User updated successfully");
+            return new ResponData<>(HttpStatus.ACCEPTED.value(), "User updated successfully");
         } catch (Exception e) {
-            return new ResponseFailure(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseSuccess deleteUser(@PathVariable String id){
+    public ResponData<?> deleteUser(@PathVariable String id){
         try{
-            return new ResponseSuccess(HttpStatus.NO_CONTENT, "delete " + id + " successfully");
+            return new ResponData<>(HttpStatus.NO_CONTENT.value(), "delete " + id + " successfully");
         } catch (Exception e) {
-            return new ResponseFailure(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
 }
