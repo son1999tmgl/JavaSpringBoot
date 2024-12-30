@@ -21,7 +21,7 @@ public class UserController {
     public ResponData<?> createUser(@Valid @RequestBody UserRequestDTO user){
         System.out.println("Request add user: " + user.getFirstName());
         try{
-            return new ResponData<>(HttpStatus.CREATED.value(), "User added successfully");
+            return new ResponData<>(HttpStatus.CREATED.value(), "User added successfully y");
         } catch (Exception e) {
             return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
