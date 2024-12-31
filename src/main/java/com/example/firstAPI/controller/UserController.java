@@ -7,6 +7,9 @@ import com.example.firstAPI.dto.response.ResponData;
 import com.example.firstAPI.dto.response.ResponseError;
 import com.example.firstAPI.dto.response.ResponseFailure;
 import com.example.firstAPI.dto.response.ResponseSuccess;
+import com.example.firstAPI.exception.ResourceNotFoundException;
+import com.example.firstAPI.services.UserService;
+import com.example.firstAPI.services.impl.UserServiceEmpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -17,13 +20,15 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private UserService userService;
     @PostMapping("/")
     public ResponData<?> createUser(@Valid @RequestBody UserRequestDTO user){
         System.out.println("Request add user: " + user.getFirstName());
         try{
+            userService.addUser(user);
             return new ResponData<>(HttpStatus.CREATED.value(), "User added successfully y");
         } catch (Exception e) {
-            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+            throw new ResourceNotFoundException(e.getMessage());
         }
     }
     @GetMapping("/{id}")

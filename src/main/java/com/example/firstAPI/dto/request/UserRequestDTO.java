@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public class UserRequestDTO {
     @NotNull(message = "lastName must be not null")
     private String firstName;
-    @NotEmpty(message = "addresses can not empty")
+    @NotEmpty(message = "lassName can not empty")
     private String lastName;
     private String email;
     private Integer age;

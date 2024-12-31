@@ -15,7 +15,6 @@ import java.util.Date;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-//    request: request từ api
     @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
 
@@ -44,6 +43,19 @@ public class GlobalExceptionHandler {
             errorResponse.setMessage(message);
         }
         return errorResponse;
+    }
 
+
+    @ExceptionHandler({ResourceNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(new Date());
+        errorResponse.setPath(request.getDescription(false).replace("uri=", ""));
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        errorResponse.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+        errorResponse.setMessage(e.getMessage());
+
+        return errorResponse;
     }
 }
