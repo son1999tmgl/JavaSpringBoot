@@ -11,22 +11,31 @@ import com.example.firstAPI.exception.ResourceNotFoundException;
 import com.example.firstAPI.services.UserService;
 import com.example.firstAPI.services.impl.UserServiceEmpl;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
 import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private UserService userService;
+    @Autowired
+    private UserServiceEmpl userService;
+    @Autowired
+    private MessageSource messageSource;
     @PostMapping("/")
     public ResponData<?> createUser(@Valid @RequestBody UserRequestDTO user){
         System.out.println("Request add user: " + user.getFirstName());
         try{
             userService.addUser(user);
-            return new ResponData<>(HttpStatus.CREATED.value(), "User added successfully y");
+            Locale locale = Locale.getDefault();
+            // Lấy thông điệp từ MessageSource theo key
+            String message = messageSource.getMessage("success.addUser", null, locale);
+            return new ResponData<>(HttpStatus.CREATED.value(), message);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());
         }
