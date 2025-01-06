@@ -2,23 +2,18 @@ package com.example.firstAPI.controller;
 
 
 import com.example.firstAPI.DEnum.ECity;
+import com.example.firstAPI.configuration.Translator;
 import com.example.firstAPI.dto.request.UserRequestDTO;
 import com.example.firstAPI.dto.response.ResponData;
 import com.example.firstAPI.dto.response.ResponseError;
-import com.example.firstAPI.dto.response.ResponseFailure;
-import com.example.firstAPI.dto.response.ResponseSuccess;
 import com.example.firstAPI.exception.ResourceNotFoundException;
-import com.example.firstAPI.services.UserService;
 import com.example.firstAPI.services.impl.UserServiceEmpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Locale;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/user")
@@ -32,9 +27,8 @@ public class UserController {
         System.out.println("Request add user: " + user.getFirstName());
         try{
             userService.addUser(user);
-            Locale locale = Locale.getDefault();
             // Lấy thông điệp từ MessageSource theo key
-            String message = messageSource.getMessage("success.addUser", null, locale);
+            String message = Translator.toLocale("success.addUser");
             return new ResponData<>(HttpStatus.CREATED.value(), message);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());
