@@ -8,6 +8,8 @@ import com.example.firstAPI.dto.response.ResponData;
 import com.example.firstAPI.dto.response.ResponseError;
 import com.example.firstAPI.exception.ResourceNotFoundException;
 import com.example.firstAPI.services.impl.UserServiceEmpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,11 +19,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@Tag(name = "User Controllers")
 public class UserController {
     @Autowired
     private UserServiceEmpl userService;
     @Autowired
     private MessageSource messageSource;
+
+    @Operation(summary = "add user", description = "description add user")
     @PostMapping("/")
     public ResponData<?> createUser(@Valid @RequestBody UserRequestDTO user){
         System.out.println("Request add user: " + user.getFirstName());
