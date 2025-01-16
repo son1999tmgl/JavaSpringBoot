@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: son-java-app
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+openai:
+  service:
+    api-docs: api-service
+    server: http://localhost:8080
+    title: API service
+    version: 1.0.0
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+openai:
+  service:
+    api-docs: api-service
+    server: http://localhost:8081
+    title: API service
+    version: 1.0.0
+---
+spring:
+  config:
+    activate:
+      on-profile: product
+openai:
+  service:
+    api-docs: api-service
+    server: http://localhost:8082
+    title: API service
+    version: 1.0.0
