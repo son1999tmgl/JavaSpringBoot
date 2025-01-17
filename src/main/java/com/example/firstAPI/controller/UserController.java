@@ -6,6 +6,7 @@ import com.example.firstAPI.configuration.Translator;
 import com.example.firstAPI.dto.request.UserRequestDTO;
 import com.example.firstAPI.dto.response.ResponData;
 import com.example.firstAPI.dto.response.ResponseError;
+import com.example.firstAPI.entities.Book;
 import com.example.firstAPI.exception.ResourceNotFoundException;
 import com.example.firstAPI.services.impl.UserServiceEmpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -63,5 +66,9 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
+    }
+    @GetMapping("/")
+    public List<Book> getAll(){
+        return userService.testHibernate();
     }
 }
