@@ -1,65 +1,70 @@
 package com.example.firstAPI.dto.request;
 
 import com.example.firstAPI.DEnum.ECity;
+import com.example.firstAPI.dto.validator.EnumPattern;
+import com.example.firstAPI.dto.validator.EnumValue;
+import com.example.firstAPI.dto.validator.GenderSubset;
+import com.example.firstAPI.dto.validator.PhoneNumber;
+import com.example.firstAPI.util.Gender;
+import com.example.firstAPI.util.UserStatus;
+import com.example.firstAPI.util.UserType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-public class UserRequestDTO {
-    @NotNull(message = "lastName must be not null")
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Set;
+
+@Getter
+public class UserRequestDTO implements Serializable {
+
+    @NotBlank(message = "firstName must be not blank") // Khong cho phep gia tri blank
     private String firstName;
-    @NotEmpty(message = "lassName can not empty")
+
+    @NotNull(message = "lastName must be not null") // Khong cho phep gia tri null
     private String lastName;
+
+    @Email(message = "email invalid format") // Chi chap nhan nhung gia tri dung dinh dang email
     private String email;
-    private Integer age;
-    @CitySubset(anyOf = {ECity.HCM, ECity.HANOI, ECity.DA_NANG})
-    private ECity city;
 
+    //@Pattern(regexp = "^\\d{10}$", message = "phone invalid format")
+    @PhoneNumber(message = "phone invalid format")
+    private String phone;
 
+    @NotNull(message = "dateOfBirth must be not null")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "MM/dd/yyyy")
+    private Date dateOfBirth;
 
-    public UserRequestDTO(String firstName, String lastName, String email, Integer age, ECity city) {
+    //@Pattern(regexp = "^male|female|other$", message = "gender must be one in {male, female, other}")
+    @GenderSubset(anyOf = {Gender.MALE, Gender.FEMALE, Gender.OTHER})
+    private Gender gender;
+
+    @NotNull(message = "username must be not null")
+    private String username;
+
+    @NotNull(message = "password must be not null")
+    private String password;
+
+    @NotNull(message = "type must be not null")
+    @EnumValue(name = "type", enumClass = UserType.class)
+    private String type;
+
+    @EnumPattern(name = "status", regexp = "ACTIVE|INACTIVE|NONE")
+    private UserStatus status;
+
+    @NotEmpty(message = "addresses can not empty")
+    private Set<AddressDTO> addresses;
+
+    public UserRequestDTO(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.age = age;
-        this.city = city;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-    public ECity getCity() {
-        return city;
-    }
-
-    public void setCity(ECity city) {
-        this.city = city;
+        this.phone = phone;
     }
 }

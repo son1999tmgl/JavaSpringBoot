@@ -12,6 +12,7 @@ import com.example.firstAPI.services.impl.UserServiceEmpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Tag(name = "User Controllers")
+@Slf4j
 public class UserController {
     @Autowired
     private UserServiceEmpl userService;
@@ -31,25 +33,25 @@ public class UserController {
 
     @Operation(summary = "add user", description = "description add user")
     @PostMapping("/")
-    public ResponData<?> createUser(@Valid @RequestBody UserRequestDTO user){
-        System.out.println("Request add user: " + user.getFirstName());
-        try{
-            userService.addUser(user);
-            // Lấy thông điệp từ MessageSource theo key
-            String message = Translator.toLocale("success.addUser");
-            return new ResponData<>(HttpStatus.CREATED.value(), message);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException(e.getMessage());
+    public ResponData<Long> createUser(@Valid @RequestBody UserRequestDTO user){
+        log.info("Create user");
+        try {
+            long userId = userService.saveUser(user);
+            return new ResponData<>(HttpStatus.OK.value(), "user", userId);
+        }catch (Exception e){
+            log.error("errorMessage={}", e.getMessage(), e.getCause());
+            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
     @GetMapping("/{id}")
     public ResponData<?> getUser(@PathVariable("id") String id){
-        System.out.println("get id: " + id);
-        try{
-            return new ResponData<>(HttpStatus.OK.value(), "user", new UserRequestDTO("Nguyen", "Son", "son1999tmgl3@gmail.com", 18, ECity.HANOI));
-        } catch (Exception e) {
-            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-        }
+//        System.out.println("get id: " + id);
+//        try{
+//            return new ResponData<>(HttpStatus.OK.value(), "user", new UserRequestDTO("Nguyen", "Son", "son1999tmgl3@gmail.com", 18, ECity.HANOI));
+//        } catch (Exception e) {
+//            return new ResponseError<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+//        }
+        return null;
     }
     @PutMapping("/")
     public ResponData<?> updateUser(@RequestBody UserRequestDTO user){
@@ -69,6 +71,6 @@ public class UserController {
     }
     @GetMapping("/")
     public List<Book> getAll(){
-        return userService.testHibernate();
+        return null;
     }
 }
